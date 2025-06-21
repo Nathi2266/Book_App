@@ -1,81 +1,68 @@
-from flask import Flask, render_template, request, redirect, url_for
-import sqlite3
-from datetime import datetime
+from flask import Flask, request, jsonify, render_template, g
+from flask_cors import CORS
+from support import init_db, get_db_session, close_db_session, Book
+import os
+import datetime
 
 app = Flask(__name__)
-DATABASE = 'books.db'
+CORS(app)
 
-def init_db():
-    conn = sqlite3.connect(DATABASE)
-    c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS books
-                 (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                 title TEXT NOT NULL,
-                 author TEXT NOT NULL,
-                 pages INTEGER,
-                 published DATE)''')
-    conn.commit()
-    conn.close()
+# Initialize database
+init_db()
 
+@app.before_request
+def before_request():
+    g.db = get_db_session()
+
+@app.teardown_request
+def teardown_request(exception=None):
+    close_db_session()
+
+# Updated API routes
+@app.route('/api/books', methods=['GET'])
+def get_books():
+    try:
+        books = g.db.query(Book).all()
+        return jsonify([{
+            "id": book.id,
+            "title": book.title,
+            "author": book.author,
+            "pages": book.pages,
+            "published": book.published
+        } for book in books])
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/books', methods=['POST'])
+def add_book():
+    try:
+        data = request.get_json()
+        published_date = None
+        if data.get('published'):
+            published_date = datetime.datetime.strptime(data['published'], '%Y-%m-%d').date()
+
+        new_book = Book(
+            title=data['title'],
+            author=data['author'],
+            pages=data['pages'],
+            published=published_date
+        )
+        g.db.add(new_book)
+        g.db.commit()
+        return jsonify({"message": "Book added successfully", "id": new_book.id}), 201
+    except Exception as e:
+        g.db.rollback()
+        return jsonify({"error": str(e)}), 500
+    finally:
+        g.db.close()
+
+# The old routes are no longer needed for the React frontend,
+# but we can keep them for reference or direct access if you want.
 @app.route('/')
 def index():
-    conn = sqlite3.connect(DATABASE)
-    conn.row_factory = sqlite3.Row
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM books")
-    books = cur.fetchall()
-    conn.close()
+    conn = get_db_session()
+    books = conn.query(Book).all()
     return render_template('index.html', books=books)
 
-@app.route('/add', methods=['GET', 'POST'])
-def add_book():
-    if request.method == 'POST':
-        title = request.form['title']
-        author = request.form['author']
-        pages = request.form['pages']
-        published = request.form['published']
-        
-        conn = sqlite3.connect(DATABASE)
-        cur = conn.cursor()
-        cur.execute("INSERT INTO books (title, author, pages, published) VALUES (?, ?, ?, ?)",
-                    (title, author, pages, published))
-        conn.commit()
-        conn.close()
-        return redirect(url_for('index'))
-    return render_template('add.html')
-
-@app.route('/edit/<int:id>', methods=['GET', 'POST'])
-def edit_book(id):
-    conn = sqlite3.connect(DATABASE)
-    conn.row_factory = sqlite3.Row
-    cur = conn.cursor()
-    
-    if request.method == 'POST':
-        title = request.form['title']
-        author = request.form['author']
-        pages = request.form['pages']
-        published = request.form['published']
-        
-        cur.execute("UPDATE books SET title=?, author=?, pages=?, published=? WHERE id=?",
-                    (title, author, pages, published, id))
-        conn.commit()
-        conn.close()
-        return redirect(url_for('index'))
-    
-    cur.execute("SELECT * FROM books WHERE id=?", (id,))
-    book = cur.fetchone()
-    conn.close()
-    return render_template('edit.html', book=book)
-
-@app.route('/delete/<int:id>')
-def delete_book(id):
-    conn = sqlite3.connect(DATABASE)
-    cur = conn.cursor()
-    cur.execute("DELETE FROM books WHERE id=?", (id,))
-    conn.commit()
-    conn.close()
-    return redirect(url_for('index'))
-
 if __name__ == '__main__':
-    init_db()
-    app.run(debug=True)
+    app.run(debug=True, port=5000)
