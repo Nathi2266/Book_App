@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Collection</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        .button { background-color: #4CAF50; border: none; color: white; padding: 5px 10px; text-align: center; text-decoration: none; display: inline-block; }
+        .button-delete { background-color: #f44336; }
+    </style>
+</head>
+<body>
+    <h1>Book Collection</h1>
+    <a href="/add" class="button">Add New Book</a>
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Pages</th>
+            <th>Published</th>
+            <th>Actions</th>
+        </tr>
+        {% for book in books %}
+        <tr>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.pages }}</td>
+            <td>{{ book.published }}</td>
+            <td>
+                <a href="/edit/{{ book.id }}" class="button">Edit</a>
+                <a href="/delete/{{ book.id }}" class="button button-delete">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
