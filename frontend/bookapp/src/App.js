@@ -5,6 +5,9 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import AddBook from './pages/AddBook';
 import Navigation from './components/Navigation';
+import BookNotes from './pages/BookNotes';
+import ExportPage from './pages/ExportPage';
+import DailyQuote from './pages/DailyQuote';
 
 function App() {
   return (
@@ -18,6 +21,9 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/add-book" element={<AddBook />} />
+            <Route path="/book/:id/notes" element={<BookNotes />} />
+            <Route path="/export" element={<ExportPage />} />
+            <Route path="/daily" element={<DailyQuote />} />
           </Routes>
         </Box>
       </Box>

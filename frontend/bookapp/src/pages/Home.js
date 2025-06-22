@@ -70,6 +70,7 @@ const Home = () => {
                     <Th>Author</Th>
                     <Th isNumeric>Pages</Th>
                     <Th>Published</Th>
+                    <Th>Actions</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -79,6 +80,16 @@ const Home = () => {
                       <Td>{book.author}</Td>
                       <Td isNumeric>{book.pages}</Td>
                       <Td>{book.published}</Td>
+                      <Td>
+                        <Button 
+                          as={RouterLink} 
+                          to={`/book/${book.id}/notes`}
+                          size="sm" 
+                          colorScheme="teal"
+                        >
+                          Notes
+                        </Button>
+                      </Td>
                     </Tr>
                   ))}
                 </Tbody>

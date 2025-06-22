@@ -53,6 +53,24 @@ const Navigation = () => {
           >
             Get Started
           </Button>
+          <Button 
+            as={RouterLink} 
+            to="/export" 
+            color="white"
+            variant="ghost"
+            _hover={{ bg: 'blackAlpha.200' }}
+          >
+            Export
+          </Button>
+          <Button 
+            as={RouterLink} 
+            to="/daily" 
+            color="white"
+            variant="ghost"
+            _hover={{ bg: 'blackAlpha.200' }}
+          >
+            Daily Quote
+          </Button>
         </Flex>
       </Flex>
     </Box>
