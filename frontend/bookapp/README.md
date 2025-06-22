@@ -1,70 +1,77 @@
-# Getting Started with Create React App
+# Book Tracking Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack web application for managing your personal book collection with notes, exports, and daily inspiration. Built with React (Chakra UI) frontend and Flask backend.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- 📚 Book Collection Management
+  - Add/edit/delete books
+  - View all books in a clean table format
+- 📝 Notes & Highlights
+  - Add private notes to each book
+  - View notes history with timestamps
+- 📤 Export Functionality
+  - Export your entire library to CSV
+  - One-click download capability
+- 💡 Daily Reading Inspiration
+  - Get random book-related quotes
+  - Refresh for new motivation
+- 🔒 User Authentication
+  - Secure registration/login
+  - Protected routes
 
-### `npm start`
+## Technologies Used
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+**Frontend**
+- React.js
+- Chakra UI
+- React Router
+- Axios
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+**Backend**
+- Python Flask
+- SQLAlchemy
+- SQLite
 
-### `npm test`
+## Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Backend Setup
+```bash
+cd Backend
+pip install -r requirements.txt
+python app.py
+```
 
-### `npm run build`
+### Frontend Setup
+```bash
+cd frontend/bookapp
+npm install
+npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## API Endpoints
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/books` | GET | Get all books |
+| `/api/books` | POST | Add new book |
+| `/api/books/{id}/notes` | GET | Get notes for a book |
+| `/api/notes` | POST | Add new note |
+| `/api/notes/{id}` | DELETE | Delete a note |
+| `/api/export` | GET | Export books as CSV |
+| `/api/daily` | GET | Get daily book quote |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Usage
 
-### `npm run eject`
+1. Start both backend and frontend servers
+2. Register a new account or login
+3. Add books using the "Add Book" button
+4. Click "Notes" on any book to add insights
+5. Use the navigation menu to:
+   - Export your library
+   - Get daily quotes
+   - Manage your account
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Contributing
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Pull requests are welcome. For major changes, please open an issue first to discuss proposed changes.
